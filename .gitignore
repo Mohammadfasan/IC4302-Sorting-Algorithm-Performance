@@ -1,0 +1,13 @@
+# Maven build files
+target/
+**/target/
+
+# Java
+*.class
+*.log
+
+# VS Code
+.vscode/
+
+# Windows
+Thumbs.db
