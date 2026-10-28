@@ -75,4 +75,38 @@ public class CSVReader {
     public int getRowCount() {
         return rows.size();
     }
+
+   
+    // Return the total number of columns
+    public int getColumnCount() {
+        return headers.size();
+    }
+
+    // Return a safe copy of all dataset rows
+    public List<String[]> getRows() {
+        List<String[]> copy = new ArrayList<>();
+
+        for (String[] row : rows) {
+            copy.add(row.clone());
+        }
+
+        return Collections.unmodifiableList(copy);
+    }
+
+    // Identify columns containing only numeric values
+    public List<Integer> getNumericColumnIndexes() {
+        List<Integer> numericColumns = new ArrayList<>();
+
+        for (int i = 0; i < headers.size(); i++) {
+            try {
+                getNumericColumn(i);
+                numericColumns.add(i);
+            } catch (IllegalArgumentException e) {
+                // Skip non-numeric columns
+            }
+        }
+
+        return numericColumns;
+    }
+
 }

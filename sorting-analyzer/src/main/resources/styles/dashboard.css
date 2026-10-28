@@ -1,0 +1,159 @@
+
+/* ======================================
+   SORTLAB - DARK & LIGHT THEME
+   ====================================== */
+
+/* DARK MODE */
+.dark {
+    -fx-background-color: #0F172A;
+}
+
+.dark .sidebar {
+    -fx-background-color: #111827;
+}
+
+.dark .content {
+    -fx-background-color: #0F172A;
+}
+
+.dark .label {
+    -fx-text-fill: #F8FAFC;
+}
+
+.dark .stat-card {
+    -fx-background-color: #1E293B;
+    -fx-background-radius: 14;
+}
+
+/* LIGHT MODE */
+.light {
+    -fx-background-color: #F1F5F9;
+}
+
+.light .sidebar {
+    -fx-background-color: #FFFFFF;
+}
+
+.light .content {
+    -fx-background-color: #F1F5F9;
+}
+
+.light .label {
+    -fx-text-fill: #0F172A;
+}
+
+.light .stat-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 14;
+}
+
+/* SCROLL PANE FIX */
+.dark .scroll-pane,
+.dark .scroll-pane > .viewport {
+    -fx-background-color: #0F172A;
+}
+
+.light .scroll-pane,
+.light .scroll-pane > .viewport {
+    -fx-background-color: #F1F5F9;
+}
+
+.scroll-pane {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+/* TABLE VIEW - DARK */
+.dark .table-view {
+    -fx-background-color: #1E293B;
+    -fx-control-inner-background: #1E293B;
+    -fx-table-cell-border-color: #334155;
+}
+
+.dark .table-view .column-header-background,
+.dark .table-view .column-header {
+    -fx-background-color: #334155;
+}
+
+.dark .table-view .column-header .label {
+    -fx-text-fill: #FFFFFF;
+}
+
+.dark .table-row-cell {
+    -fx-background-color: #1E293B;
+}
+
+.dark .table-row-cell:odd {
+    -fx-background-color: #243247;
+}
+
+.dark .table-cell {
+    -fx-text-fill: #F8FAFC;
+}
+
+/* TABLE VIEW - LIGHT */
+.light .table-view {
+    -fx-background-color: #FFFFFF;
+    -fx-control-inner-background: #FFFFFF;
+    -fx-table-cell-border-color: #E2E8F0;
+}
+
+.light .table-view .column-header-background,
+.light .table-view .column-header {
+    -fx-background-color: #E2E8F0;
+}
+
+.light .table-row-cell {
+    -fx-background-color: #FFFFFF;
+}
+
+.light .table-row-cell:odd {
+    -fx-background-color: #F8FAFC;
+}
+
+.light .table-cell {
+    -fx-text-fill: #0F172A;
+}
+
+/* COMBO BOX */
+.dark .combo-box {
+    -fx-background-color: #334155;
+}
+
+.dark .combo-box .list-cell {
+    -fx-text-fill: #FFFFFF;
+}
+
+.light .combo-box {
+    -fx-background-color: #E2E8F0;
+}
+
+.light .combo-box .list-cell {
+    -fx-text-fill: #0F172A;
+}
+
+/* BUTTONS */
+.button {
+    -fx-background-color: #10B981;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 9;
+    -fx-padding: 11 15;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #059669;
+}
+
+.button:disabled {
+    -fx-opacity: 0.55;
+}
+
+/* SCROLLBAR */
+.dark .scroll-bar {
+    -fx-background-color: #0F172A;
+}
+
+.light .scroll-bar {
+    -fx-background-color: #F1F5F9;
+}
