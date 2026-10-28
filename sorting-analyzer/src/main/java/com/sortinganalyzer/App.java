@@ -1,10 +1,18 @@
+
 package com.sortinganalyzer;
 
-/**
- * Hello world!
- */
-public class App {
+import com.sortinganalyzer.gui.SortLabDashboard;
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+public class App extends Application {
+
+    @Override
+    public void start(Stage stage) {
+        new SortLabDashboard().show(stage);
+    }
+
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        launch(args);
     }
 }
