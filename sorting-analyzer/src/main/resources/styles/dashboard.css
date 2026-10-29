@@ -243,3 +243,45 @@
     -fx-bar-fill: #34D399;
 }
 
+
+
+/* ==================================
+   ALGORITHM EXPLORER COMBOBOX THEME
+   ================================== */
+
+/* Dark mode dropdown */
+.dark .combo-box-popup .list-view {
+    -fx-background-color: #1E293B;
+    -fx-border-color: #334155;
+}
+
+.dark .combo-box-popup .list-cell {
+    -fx-background-color: #1E293B;
+    -fx-text-fill: #F8FAFC;
+    -fx-padding: 10 14;
+}
+
+.dark .combo-box-popup .list-cell:hover,
+.dark .combo-box-popup .list-cell:filled:selected {
+    -fx-background-color: #10B981;
+    -fx-text-fill: white;
+}
+
+/* Light mode dropdown */
+.light .combo-box-popup .list-view {
+    -fx-background-color: white;
+    -fx-border-color: #E2E8F0;
+}
+
+.light .combo-box-popup .list-cell {
+    -fx-background-color: white;
+    -fx-text-fill: #0F172A;
+    -fx-padding: 10 14;
+}
+
+.light .combo-box-popup .list-cell:hover,
+.light .combo-box-popup .list-cell:filled:selected {
+    -fx-background-color: #10B981;
+    -fx-text-fill: white;
+}
+
