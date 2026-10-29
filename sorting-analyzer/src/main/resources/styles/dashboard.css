@@ -157,3 +157,131 @@
 .light .scroll-bar {
     -fx-background-color: #F1F5F9;
 }
+
+
+
+/* ======================================
+   SORTLAB - PERFORMANCE CHART STYLING
+   ====================================== */
+
+/* Dark mode chart background */
+.dark .chart {
+    -fx-background-color: #1E293B;
+    -fx-background-radius: 14;
+    -fx-padding: 20;
+}
+
+.dark .chart-plot-background {
+    -fx-background-color: #1E293B;
+}
+
+/* Light mode chart background */
+.light .chart {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 14;
+    -fx-padding: 20;
+}
+
+.light .chart-plot-background {
+    -fx-background-color: #F8FAFC;
+}
+
+/* Chart titles */
+.dark .chart-title {
+    -fx-text-fill: #F8FAFC;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.light .chart-title {
+    -fx-text-fill: #0F172A;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* Axis labels */
+.dark .axis-label {
+    -fx-text-fill: #CBD5E1;
+}
+
+.light .axis-label {
+    -fx-text-fill: #475569;
+}
+
+/* Tick labels */
+.dark .axis {
+    -fx-tick-label-fill: #CBD5E1;
+}
+
+.light .axis {
+    -fx-tick-label-fill: #475569;
+}
+
+/* Chart grid */
+.dark .chart-horizontal-grid-lines,
+.dark .chart-vertical-grid-lines {
+    -fx-stroke: #334155;
+}
+
+.light .chart-horizontal-grid-lines,
+.light .chart-vertical-grid-lines {
+    -fx-stroke: #E2E8F0;
+}
+
+/* Emerald-colored bars */
+.chart-bar.default-color0 {
+    -fx-bar-fill: #10B981;
+}
+
+/* Remove chart outlines */
+.chart-bar {
+    -fx-background-radius: 5 5 0 0;
+}
+
+/* Chart hover color */
+.chart-bar:hover {
+    -fx-bar-fill: #34D399;
+}
+
+
+
+/* ==================================
+   ALGORITHM EXPLORER COMBOBOX THEME
+   ================================== */
+
+/* Dark mode dropdown */
+.dark .combo-box-popup .list-view {
+    -fx-background-color: #1E293B;
+    -fx-border-color: #334155;
+}
+
+.dark .combo-box-popup .list-cell {
+    -fx-background-color: #1E293B;
+    -fx-text-fill: #F8FAFC;
+    -fx-padding: 10 14;
+}
+
+.dark .combo-box-popup .list-cell:hover,
+.dark .combo-box-popup .list-cell:filled:selected {
+    -fx-background-color: #10B981;
+    -fx-text-fill: white;
+}
+
+/* Light mode dropdown */
+.light .combo-box-popup .list-view {
+    -fx-background-color: white;
+    -fx-border-color: #E2E8F0;
+}
+
+.light .combo-box-popup .list-cell {
+    -fx-background-color: white;
+    -fx-text-fill: #0F172A;
+    -fx-padding: 10 14;
+}
+
+.light .combo-box-popup .list-cell:hover,
+.light .combo-box-popup .list-cell:filled:selected {
+    -fx-background-color: #10B981;
+    -fx-text-fill: white;
+}
+
