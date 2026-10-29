@@ -15,7 +15,9 @@ import java.util.function.Consumer;
 
 public class SortingBenchmark {
 
-    // Store execution time for each algorithm
+    private static final int WARMUP_RUNS = 5;
+    private static final int MEASURED_RUNS = 15;
+
     public record Result(
             String algorithm,
             long nanoseconds,
@@ -23,116 +25,102 @@ public class SortingBenchmark {
             double seconds
     ) {}
 
-    // Run all five sorting algorithms
     public static List<Result> run(double[] originalData) {
 
         if (originalData == null || originalData.length == 0) {
             throw new IllegalArgumentException(
-                "Please select a non-empty numeric dataset."
+                    "Please select a non-empty numeric dataset."
             );
         }
 
         List<Result> results = new ArrayList<>();
 
-        benchmark(
-            results,
-            "Insertion Sort",
-            originalData,
-            InsertionSort::sort
-        );
+        benchmark(results, "Insertion Sort",
+                originalData, InsertionSort::sort);
 
-        benchmark(
-            results,
-            "Shell Sort",
-            originalData,
-            ShellSort::sort
-        );
+        benchmark(results, "Shell Sort",
+                originalData, ShellSort::sort);
 
-        benchmark(
-            results,
-            "Merge Sort",
-            originalData,
-            MergeSort::sort
-        );
+        benchmark(results, "Merge Sort",
+                originalData, MergeSort::sort);
 
-        benchmark(
-            results,
-            "Quick Sort",
-            originalData,
-            QuickSort::sort
-        );
+        benchmark(results, "Quick Sort",
+                originalData, QuickSort::sort);
 
-        benchmark(
-            results,
-            "Heap Sort",
-            originalData,
-            HeapSort::sort
-        );
+        benchmark(results, "Heap Sort",
+                originalData, HeapSort::sort);
 
         return results;
     }
 
-    // Measure execution time of one sorting algorithm
     private static void benchmark(
             List<Result> results,
             String name,
             double[] originalData,
             Consumer<double[]> algorithm) {
 
-        // Create a separate copy for fair comparison
-        double[] data = originalData.clone();
-
-        // Prepare the expected sorted result
         double[] expected = originalData.clone();
         Arrays.sort(expected);
 
-        // Start performance measurement
-        long startTime = System.nanoTime();
+        // Warm-up runs are not included in the results.
+        for (int i = 0; i < WARMUP_RUNS; i++) {
+            double[] data = originalData.clone();
 
-        // Execute sorting algorithm
-        algorithm.accept(data);
-
-        // End performance measurement
-        long endTime = System.nanoTime();
-
-        // Check whether sorting is correct
-        if (!Arrays.equals(data, expected)) {
-            throw new IllegalStateException(
-                name + " produced an incorrect sorted result."
-            );
+            algorithm.accept(data);
+            verifySorted(name, data, expected);
         }
 
-        // Calculate execution time
-        long elapsedNanoseconds = endTime - startTime;
+        long[] times = new long[MEASURED_RUNS];
 
-        double elapsedMilliseconds =
-                elapsedNanoseconds / 1_000_000.0;
+        // Measure sorting only, not array copying.
+        for (int i = 0; i < MEASURED_RUNS; i++) {
 
-        double elapsedSeconds =
-                elapsedNanoseconds / 1_000_000_000.0;
+            double[] data = originalData.clone();
 
-        // Save result
+            long start = System.nanoTime();
+            algorithm.accept(data);
+            long end = System.nanoTime();
+
+            verifySorted(name, data, expected);
+
+            times[i] = end - start;
+        }
+
+        Arrays.sort(times);
+
+        // 15 runs: the middle (8th) value is the median.
+        long medianNanoseconds = times[MEASURED_RUNS / 2];
+
         results.add(new Result(
-            name,
-            elapsedNanoseconds,
-            elapsedMilliseconds,
-            elapsedSeconds
+                name,
+                medianNanoseconds,
+                medianNanoseconds / 1_000_000.0,
+                medianNanoseconds / 1_000_000_000.0
         ));
     }
 
-    // Find the fastest sorting algorithm
+    private static void verifySorted(
+            String name,
+            double[] actual,
+            double[] expected) {
+
+        if (!Arrays.equals(actual, expected)) {
+            throw new IllegalStateException(
+                    name + " produced an incorrect sorted result."
+            );
+        }
+    }
+
     public static Result findFastest(List<Result> results) {
 
         if (results == null || results.isEmpty()) {
             throw new IllegalArgumentException(
-                "No benchmark results available."
+                    "No benchmark results available."
             );
         }
 
         return results.stream()
-                .min(Comparator.comparingLong(
-                    Result::nanoseconds
-                ))
+                .min(Comparator.comparingLong(Result::nanoseconds))
                 .orElseThrow();
     }
 }
