@@ -24,6 +24,7 @@ public class SortLabDashboard {
     private Label numericValue;
 
     private DatasetExplorer datasetExplorer;
+    private PerformanceResults performanceResults;
 
     public void show(Stage stage) {
 
@@ -37,9 +38,9 @@ public class SortLabDashboard {
 
         Label logo = new Label("◈ SortLab");
         logo.setStyle(
-            "-fx-font-size: 26px;" +
-            "-fx-font-weight: bold;" +
-            "-fx-text-fill: #10B981;"
+                "-fx-font-size: 26px;" +
+                "-fx-font-weight: bold;" +
+                "-fx-text-fill: #10B981;"
         );
 
         Button dashboardBtn = new Button("▦  Dashboard");
@@ -48,7 +49,10 @@ public class SortLabDashboard {
         Button algorithmsBtn = new Button("◉  Algorithm Explorer");
 
         Button[] buttons = {
-            dashboardBtn, datasetBtn, resultsBtn, algorithmsBtn
+                dashboardBtn,
+                datasetBtn,
+                resultsBtn,
+                algorithmsBtn
         };
 
         for (Button button : buttons) {
@@ -58,10 +62,13 @@ public class SortLabDashboard {
 
         sidebar.getChildren().add(logo);
         sidebar.getChildren().addAll(buttons);
+
         // Header
-        Label appTitle = new Label("Sorting Performance Analyzer");
+        Label appTitle =
+                new Label("Sorting Performance Analyzer");
+
         appTitle.setStyle(
-            "-fx-font-size: 21px; -fx-font-weight: bold;"
+                "-fx-font-size: 21px; -fx-font-weight: bold;"
         );
 
         themeButton = new Button("☀ Light Mode");
@@ -84,37 +91,43 @@ public class SortLabDashboard {
         root.setLeft(sidebar);
         root.setCenter(centerLayout);
 
-        // Create Dataset Explorer only once
+        // Create Dataset Explorer once.
+        // The selected CSV column is shared with PerformanceResults.
         datasetExplorer = new DatasetExplorer(
-            this::updateDashboardStatistics
+                this::updateDashboardStatistics
         );
+
+        // New Performance Results page
+        performanceResults =
+                new PerformanceResults(datasetExplorer);
 
         // Sidebar navigation
         dashboardBtn.setOnAction(e -> showDashboard());
+
         datasetBtn.setOnAction(e -> showDatasetExplorer());
 
-        resultsBtn.setOnAction(e ->
-            showPlaceholder(
-                "Performance Results",
-                "Sorting performance chart will be added next."
-            )
-        );
+        resultsBtn.setOnAction(e -> showPerformanceResults());
 
         algorithmsBtn.setOnAction(e ->
-            showPlaceholder(
-                "Algorithm Explorer",
-                "Five sorting algorithm details will be added next."
-            )
+                showPlaceholder(
+                        "Algorithm Explorer",
+                        "Five sorting algorithm details will be added next."
+                )
         );
 
+        // JavaFX Scene
         scene = new Scene(root, 1150, 750);
 
         scene.getStylesheets().add(
-            getClass().getResource("/styles/dashboard.css")
-                .toExternalForm()
+                getClass()
+                        .getResource("/styles/dashboard.css")
+                        .toExternalForm()
         );
 
+        // Apply initial theme
         applyTheme();
+
+        // Open dashboard by default
         showDashboard();
 
         stage.setTitle("SortLab - Sorting Performance Analyzer");
@@ -124,15 +137,16 @@ public class SortLabDashboard {
         stage.show();
     }
 
+    // Create dashboard statistic card
     private VBox statCard(String title, Label value) {
 
         Label name = new Label(title);
         name.setStyle("-fx-font-size: 14px;");
 
         value.setStyle(
-            "-fx-font-size: 30px;" +
-            "-fx-font-weight: bold;" +
-            "-fx-text-fill: #10B981;"
+                "-fx-font-size: 30px;" +
+                "-fx-font-weight: bold;" +
+                "-fx-text-fill: #10B981;"
         );
 
         VBox card = new VBox(12, name, value);
@@ -143,42 +157,61 @@ public class SortLabDashboard {
         return card;
     }
 
+    // Main Dashboard
     private void showDashboard() {
 
         Label title = new Label("Dashboard Overview");
         title.setStyle(
-            "-fx-font-size: 26px; -fx-font-weight: bold;"
+                "-fx-font-size: 26px; -fx-font-weight: bold;"
         );
 
         rowsValue = new Label(
-            String.valueOf(datasetExplorer.getCSVReader().getRowCount())
+                String.valueOf(
+                        datasetExplorer.getCSVReader().getRowCount()
+                )
         );
 
         numericValue = new Label(
-            String.valueOf(
-                datasetExplorer.getCSVReader()
-                    .getNumericColumnIndexes().size()
-            )
+                String.valueOf(
+                        datasetExplorer.getCSVReader()
+                                .getNumericColumnIndexes().size()
+                )
         );
 
         Label algorithmsValue = new Label("5");
 
         HBox stats = new HBox(
-            20,
-            statCard("Dataset Rows", rowsValue),
-            statCard("Numeric Columns", numericValue),
-            statCard("Sorting Algorithms", algorithmsValue)
+                20,
+                statCard("Dataset Rows", rowsValue),
+                statCard("Numeric Columns", numericValue),
+                statCard("Sorting Algorithms", algorithmsValue)
         );
 
+        stats.setAlignment(Pos.CENTER_LEFT);
+
         Label description = new Label(
-            "Upload a CSV dataset to start comparing sorting algorithms."
+                "Upload a CSV dataset to start comparing sorting algorithms."
         );
+        description.setWrapText(true);
 
         Button uploadButton = new Button("Upload CSV Dataset");
         uploadButton.setOnAction(e -> showDatasetExplorer());
 
+        Button resultsButton = new Button("View Performance Results");
+        resultsButton.setOnAction(e -> showPerformanceResults());
+
+        HBox actions = new HBox(
+                15,
+                uploadButton,
+                resultsButton
+        );
+
         VBox dashboard = new VBox(
-            25, title, stats, description, uploadButton
+                25,
+                title,
+                stats,
+                description,
+                actions
         );
 
         dashboard.setPadding(new Insets(25));
@@ -187,72 +220,103 @@ public class SortLabDashboard {
         mainContent.getChildren().setAll(dashboard);
     }
 
-   
-private void showDatasetExplorer() {
+    // Dataset Explorer
+    private void showDatasetExplorer() {
 
-    ScrollPane scroll = new ScrollPane(datasetExplorer);
+        ScrollPane scroll = new ScrollPane(datasetExplorer);
 
-    scroll.setFitToWidth(true);
-    scroll.setFitToHeight(true);
+        scroll.setFitToWidth(true);
+        scroll.setFitToHeight(true);
 
-    scroll.getStyleClass().add("content");
+        scroll.getStyleClass().add("content");
 
-    scroll.setStyle(
-        "-fx-background-color: transparent;" +
-        "-fx-background-insets: 0;"
-    );
+        scroll.setStyle(
+                "-fx-background-color: transparent;" +
+                "-fx-background-insets: 0;"
+        );
 
-    mainContent.getChildren().setAll(scroll);
-}
+        mainContent.getChildren().setAll(scroll);
+    }
 
+    // New Performance Results page
+    private void showPerformanceResults() {
 
+        ScrollPane scroll = new ScrollPane(performanceResults);
+
+        scroll.setFitToWidth(true);
+
+        scroll.getStyleClass().add("content");
+
+        scroll.setStyle(
+                "-fx-background-color: transparent;" +
+                "-fx-background-insets: 0;"
+        );
+
+        mainContent.getChildren().setAll(scroll);
+    }
+
+    // Update dashboard statistics after CSV upload
     private void updateDashboardStatistics(CSVReader csvReader) {
 
         if (rowsValue != null) {
             rowsValue.setText(
-                String.valueOf(csvReader.getRowCount())
+                    String.valueOf(csvReader.getRowCount())
             );
         }
 
         if (numericValue != null) {
             numericValue.setText(
-                String.valueOf(
-                    csvReader.getNumericColumnIndexes().size()
-                )
+                    String.valueOf(
+                            csvReader.getNumericColumnIndexes().size()
+                    )
             );
         }
     }
 
+    // Placeholder page for upcoming Algorithm Explorer
     private void showPlaceholder(String title, String message) {
 
         Label heading = new Label(title);
         heading.setStyle(
-            "-fx-font-size: 26px; -fx-font-weight: bold;"
+                "-fx-font-size: 26px; -fx-font-weight: bold;"
         );
 
         Label description = new Label(message);
+        description.setWrapText(true);
 
-        VBox content = new VBox(20, heading, description);
+        VBox content = new VBox(
+                20,
+                heading,
+                description
+        );
+
         content.setPadding(new Insets(25));
         content.getStyleClass().add("content");
 
         mainContent.getChildren().setAll(content);
     }
 
+    // Toggle Dark / Light mode
     private void toggleTheme() {
+
         darkMode = !darkMode;
 
         themeButton.setText(
-            darkMode ? "☀ Light Mode" : "☾ Dark Mode"
+                darkMode
+                        ? "☀ Light Mode"
+                        : "☾ Dark Mode"
         );
 
         applyTheme();
     }
 
+    // Apply existing CSS theme
     private void applyTheme() {
+
         root.getStyleClass().removeAll("dark", "light");
+
         root.getStyleClass().add(
-            darkMode ? "dark" : "light"
+                darkMode ? "dark" : "light"
         );
     }
 }
